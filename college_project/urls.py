@@ -21,6 +21,5 @@ import leavemanagement
 urlpatterns = [
     url(r'^leavemanagement/', include('leavemanagement.urls')),
     url(r'^admin/', admin.site.urls),
-
 ]
 admin.site.site_header = 'LEAVE MANAGEMENT'

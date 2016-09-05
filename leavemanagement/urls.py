@@ -4,7 +4,7 @@ import leavemanagement
 from leavemanagement.views import EmployeeView, timeoffapply
 from . import views
 
-urlpatterns = {
+urlpatterns = [
     url(r'^$', EmployeeView.as_view()),
     url(r'^apply',timeoffapply),
-}
+]
