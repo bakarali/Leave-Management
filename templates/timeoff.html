@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>{{message}}</div>
+<!---<ul>
+    {% for emp in apply_leave %}
+    <li><a>{{ emp.name }}</a></li>
+    {% endfor %}
+</ul>-->
+<form action="apply" method="post" >
+ {% csrf_token %}
+<label><input type="date" name="startDate" /></label>
+<label> to <input  type="date" name="endDate" /></label>
+<select name="leaveType">
+    <option>Annual leave</option>
+    <option>Casual leave</option>
+    <option>Paid leave</option>
+    <option>Optional leave</option>
+    <option>Special leave</option>
+</select>
+<input type="submit" value="Apply">
+</form>
+</body>
+</html>
