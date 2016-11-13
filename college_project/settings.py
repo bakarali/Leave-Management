@@ -88,14 +88,21 @@ WSGI_APPLICATION = 'college_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'leave_management',
-        'USER': 'root',
-        'PASSWORD': 'aqra',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'lm',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'leave_management',
+#         'USER': 'root',
+#         'PASSWORD': 'aqra',
+#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#         'PORT': '3306',
+#     }
+# }
 # 'DATABASE':'leave_management',
 # 'USER':'root',
 # 'PASSWORD':'aqra',
