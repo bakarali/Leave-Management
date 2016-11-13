@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+	<link rel = "stylesheet" type="text/css" href = "{% static 'style.css'%}"> </link>
+</head>
+<body class="log_body">
+<div class="log_div2">
+        <div class="headdiv">
+        <div class="log_ped" >LEAVE MANAGEMENT</div>
+        </div>
+        <div class="log_div3">
+        <form action="logged" method="post">
+            {% csrf_token %}
+            <input class="logintextbox" type="email" name="Email" placeholder="Email">
+            <input class="logintextbox" type="password" name="password" placeholder="Password">
+            <input class="button button2 loginbtn" type="submit" value="Login">
+        </form>
+        </div>
+
+</div>
+
+</body>
+</html>

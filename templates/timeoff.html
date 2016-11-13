@@ -1,28 +1,46 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div>{{message}}</div>
-<!---<ul>
-    {% for emp in apply_leave %}
-    <li><a>{{ emp.name }}</a></li>
-    {% endfor %}
-</ul>-->
+{%extends 'base.html'%}
+{% load staticfiles %}
+{%block content%}
+
 <form action="apply" method="post" >
  {% csrf_token %}
-<label><input type="date" name="startDate" /></label>
-<label> to <input  type="date" name="endDate" /></label>
-<select name="leaveType">
-    <option>Annual leave</option>
-    <option>Casual leave</option>
-    <option>Paid leave</option>
-    <option>Optional leave</option>
-    <option>Special leave</option>
-</select>
-<input type="submit" value="Apply">
+<div class="div1">
+    <table class="table1">
+        <tr>
+            <td><label><input type="date" name="startDate" /></label></td>
+            <td> <label>to</label></td>
+            <td><input  type="date" name="endDate" /></td>
+            <td><select class="select_lt" name="leaveType">
+                <option>Annual leave</option>
+                <option>Casual leave</option>
+                <option>Paid leave</option>
+                <option>Optional leave</option>
+                <option>Special leave</option>
+            </select></td>
+            <td><input class="button button1 apply_btn" type="submit" value="Apply"></td>
+        </tr>
+    </table>
+</div>
+
 </form>
-</body>
-</html>
+<div class="div1">
+    <div class="divlogo" style="color: black">Applied leave</div>
+<table class="table">
+    {% for instance in qs %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ instance.start_date}}</td>
+            <td>{{ instance.end_date }}</td>
+            <td></td>
+            <td>{{ instance.status }}</td>
+            <td><form action="cancel" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="leaveid" value="{{ instance.id }}">
+                <input class="button button2" type="submit" value="cancel"/>
+            </form>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+{%endblock%}

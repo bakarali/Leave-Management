@@ -85,6 +85,7 @@ WSGI_APPLICATION = 'college_project.wsgi.application'
 #         },
 #     }
 # }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
