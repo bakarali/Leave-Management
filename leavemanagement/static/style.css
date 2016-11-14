@@ -10,10 +10,10 @@
 }
 .button1 {background-color: #e7e7e7; color: black;}
 .button2 {background-color: #555555;}
-.apply_btn{ padding: 15px 35px;}
+.apply_btn{ padding: 10px 35px;}
 .div1{
     padding: 15px;
-    width: 75%;
+    width: 65%;
 
 }
 .div2{
@@ -42,7 +42,7 @@ body{
              font-size: 12px;
 }
 .divhead{
-    height: 10%;
+    height: 8%;
     width: 100%;
     left: 0px;
     top : 0px;
@@ -52,10 +52,10 @@ body{
     background: #037bd4;
 }
 .divlogo{
+    height: 45%;
     color: #ffffff;
     font-weight: 300;
     padding: 20px;
-    padding-left: 15px;
     font-size: 30px;
 }
 /*@font-face {
@@ -98,7 +98,7 @@ li a {
 }
 .select_lt {
     width: 70%;
-    padding: 15px 20px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     background-color: #f1f1f1;
@@ -153,8 +153,10 @@ li a {
     padding: 15px;
 }
 input[type=date] {
-    width: 80%;
-    padding: 10px 20px;
+    width: 60%;
+    padding: 7px 15px;
     margin: 8px 0;
     box-sizing: border-box;
+    border-radius: 1px;
+    border: 1px solid #9E9E9E;
 }
