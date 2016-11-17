@@ -1,5 +1,7 @@
 # Create your views here.
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from datetime import datetime
 
 from leavemanagement.models import Leave, Leave_type, Employee
 
@@ -21,23 +23,23 @@ def timeoffapply(request):
     else:
         stdate = request.POST['startDate']
         enddate = request.POST['endDate']
+        d1 = datetime.strptime(stdate, "%Y-%m-%d")
+        d2 = datetime.strptime(enddate, "%Y-%m-%d")
+        d3 = abs((d2 - d1).days)
         leavetype = request.POST['leaveType']
         getleaveid = list(zip(Leave_type.objects.filter(type=leavetype).values_list('id', flat=True))[0])
         split_lt_id = ("".join(str(e) for e in getleaveid))
         empid = (request.session['id'])[0]
         leave_id = Leave.objects.all().count()
         test = Leave(id=(leave_id + 1), Emp_id=empid, leave_type_id=split_lt_id, start_date=stdate, end_date=enddate,
+                     days=d3,
                      status="pending")
         test.save()
-        qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
-        context = {
-            "qs": qs
-        }
-        return render(request, 'timeoff.html', context)
+        return HttpResponseRedirect('/')
 
 
 def leaveRequestdisplay():
-    leaveqs = Leave.objects.all().exclude(status="cancel")
+    leaveqs = Leave.objects.all().exclude(status="canceled")
     context = {
         "leaveqs": leaveqs
     }
@@ -51,14 +53,13 @@ def timeoffrequested(request):
         return render(request, 'timeoffrequests.html', leaveRequestdisplay())
 
 
-
 def approve(request):
     if not request.session.get('id', None):
         return render(request, 'login.html')
     else:
         lid = request.POST['leaveid']
         test = Leave.objects.get(id=lid)
-        test.status = "Approve"
+        test.status = "Approved"
         test.save()
 
         return render(request, 'timeoffrequests.html', leaveRequestdisplay())
@@ -70,7 +71,7 @@ def decline(request):
     else:
         lid = request.POST['leaveid']
         test = Leave.objects.get(id=lid)
-        test.status = "decline"
+        test.status = "declined"
         test.save()
 
         return render(request, 'timeoffrequests.html', leaveRequestdisplay())
@@ -80,31 +81,18 @@ def cancelleave(request):
     if not request.session.get('id', None):
         return render(request, 'login.html')
     else:
-
         lid = request.POST['leaveid']
         test = Leave.objects.get(id=lid)
-        test.status = "cancel"
+        test.status = "canceled"
         test.save()
-
-        context = {
-            "qs":
-                Leave.objects.all().filter(Emp_id=(request.session['id'])[0]),
-        }
-        return render(request, 'timeoff.html', context)
+        return HttpResponseRedirect('/')
 
 
 def login(request):
     if not request.session.get('id', None):
         return render(request, 'login.html')
     else:
-        qs1 = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
-        context = {
-            "qs": qs1
-
-        }
-
-        return render(request, 'timeoff.html', context)
-
+        return HttpResponseRedirect('/')
 
 
 def logged(request):
@@ -115,16 +103,13 @@ def logged(request):
         if test1.count() == 1:
             data = list(zip(Employee.objects.filter(email=Email, password=pwd).values_list('id', flat=True))[0])
             request.session['id'] = data
-            qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0]).order_by().reverse()
-            context = {
-                "qs": qs,
-            }
+
             # return HttpResponse(data)
-            return render(request, 'timeoff.html', context)
+            return HttpResponseRedirect('/')
     return render(request, 'login.html')
 
 
 def logout(request):
     del request.session['id']
     request.session.modified = True
-    return render(request, 'login.html')
+    return HttpResponseRedirect('/login')

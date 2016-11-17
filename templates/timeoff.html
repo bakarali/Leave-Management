@@ -4,11 +4,11 @@
 
 <form action="apply" method="post" >
  {% csrf_token %}
-<div class="div1">
+<div class="apply_div">
     <table class="table1">
         <tr>
             <td><label><input class="input_date" type="date" name="startDate" /></label></td>
-            <td> <label>to</label></td>
+            <td><label>to</label></td>
             <td><input class="input_date"  type="date" name="endDate" /></td>
             <td><select class="select_lt" name="leaveType">
                 <option>Annual leave</option>
@@ -23,24 +23,26 @@
 </div>
 
 </form>
-<div class="div1">
-    <div class="divlogo" style="color: black">Applied leave</div>
-<table class="table">
+
     {% for instance in qs %}
+<div class="div1">
+
+<table class="table">
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ instance.start_date}}</td>
             <td>{{ instance.end_date }}</td>
-            <td></td>
+            <td>{{ instance.days}}</td>
             <td>{{ instance.status }}</td>
-            <td><form action="cancel" method="post">
+            <td><form action="canceled" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="leaveid" value="{{ instance.id }}">
                 <input class="button button2" type="submit" value="cancel"/>
             </form>
             </td>
         </tr>
-    {% endfor %}
+
 </table>
 </div>
+    {% endfor %}
 {%endblock%}

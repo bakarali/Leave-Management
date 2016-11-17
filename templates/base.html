@@ -7,22 +7,25 @@
     <meta charset="UTF-8">
     <title>LEAVE MANAGEMENT</title>
 </head>
-<body>
+<body >
+<div>
 <div class="divhead">
   <div class="divlogo">
       <div><a style="text-decoration: none; color: #FFFFFF" class="logo_a" href="/">LEAVE MANAGEMENT</a></div>
   </div>
   <div class="nav">
       <ul>
-        <li><a href="/logout">LOGOUT</a></li>
-        <li><a>NOTIFICATION</a></li>
-        <li><a href="/timeoffrequests">VIEW LEAVE</a></li>
+          <li><p>{{ qs.name }}</p></li>
+          <li><a href="/logout">LOGOUT</a></li>
+          <li><a>NOTIFICATION</a></li>
+          <li><a href="/timeoffrequests">VIEW LEAVE</a></li>
 
        </ul>
   </div>
 
     {%block content%}
     {%endblock%}
+    </div>
 </div>
 
 </body>

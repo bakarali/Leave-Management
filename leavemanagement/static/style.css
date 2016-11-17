@@ -7,25 +7,53 @@
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 10px 0 rgba(0, 0, 0, 0.19);
 }
-.button1 {background-color: #e7e7e7; color: black;}
-.button2 {background-color: #555555;}
+.button1 {
+    background-color: #e7e7e7;
+    color: black;
+
+}
+.button2 {
+    background-color: #555555;
+
+}
+body{
+    background-color:#FAFAFA ;
+}
 .apply_btn{ padding: 10px 35px;}
+.apply_div{
+    padding: 30px;
+    width: 70%;
+    margin: auto;
+    margin-top: 25px;
+    border:  1px solid #e7e7e7 ;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    background-color:#FFFFFF ;
+
+
+}
 .div1{
-    padding: 15px;
-    width: 65%;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 70%;
+    margin: auto;
+    margin-top: 15px;
+    border:  1px solid #e7e7e7 ;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    background-color:#FFFFFF ;
 
 }
 .div2{
     width: 75%;
     vertical-align: 50%;
 }
-.table1 td th{
-    padding: 8px;
-    text-align: left;
-    border-bottom: 0px solid #ddd;
-}
 table {
+
     border-collapse: collapse;
     width: 100%;
     padding: 15px;
@@ -33,16 +61,16 @@ table {
 }
 
 th, td {
+
     padding: 15px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 body{
              font-family: roboto;
              font-size: 12px;
 }
 .divhead{
-    height: 8%;
+    height: 12%;
     width: 100%;
     left: 0px;
     top : 0px;
@@ -69,7 +97,7 @@ ul {
     padding: 0;
     overflow: hidden;
     border: 1px solid #e7e7e7;
-    background-color: #f3f3f3;
+    background-color: #EEEEEE;
 }
 
 li {
@@ -119,6 +147,7 @@ li a {
     top: 0; left: 0; bottom: 0; right: 0;
     background-color: #F5F5F5;
     border-color: #F5F5F5 ;
+
 }
 .headdiv{
     font-family: Roboto;
@@ -129,7 +158,7 @@ li a {
     margin: 0 auto;
     width: 100%;
     background-color: #037bd4;
-    color: white
+    color: white;
 
 }
 .log_div3{
@@ -159,4 +188,8 @@ input[type=date] {
     box-sizing: border-box;
     border-radius: 1px;
     border: 1px solid #9E9E9E;
+}
+.scrollable {
+    overflow-y: scroll;
+    height: 100%;
 }

@@ -32,4 +32,5 @@ class Leave(models.Model):
     leave_type_id = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
+    days = models.IntegerField()
     status = models.CharField(max_length=200)
