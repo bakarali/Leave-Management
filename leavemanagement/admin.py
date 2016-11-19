@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Employee, Leave_type
+from .models import Employee, Leave_type, Employee_Relation
 
 
 class EmployeeAdmin(admin.ModelAdmin):
@@ -16,13 +16,19 @@ class EmployeeAdmin(admin.ModelAdmin):
     ]
 
 
+class Employee_RelationAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['Employee_id']}),
+        (None, {'fields': ['Manager_id']})
+    ]
+
+
 class Leave_typeAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['type']}),
         (None, {'fields': ['max_days']})
     ]
 
-
-admin.site.register(Leave_type,Leave_typeAdmin)
-admin.site.register(Employee,EmployeeAdmin)
-
+admin.site.register(Employee_Relation, Employee_RelationAdmin)
+admin.site.register(Leave_type, Leave_typeAdmin)
+admin.site.register(Employee, EmployeeAdmin)

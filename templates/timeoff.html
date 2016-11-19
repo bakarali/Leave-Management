@@ -1,7 +1,7 @@
 {%extends 'base.html'%}
 {% load staticfiles %}
 {%block content%}
-
+<div>
 <form action="apply" method="post" >
  {% csrf_token %}
 <div class="apply_div">
@@ -45,4 +45,12 @@
 </table>
 </div>
     {% endfor %}
+    {% for instance in qs1 %}
+        {{ instance.id}}
+        {{ instance.name}}
+        {{ instance.email}}
+        {{ instance.password}}<br>
+    {% endfor %}
+
+</div>
 {%endblock%}

@@ -2,10 +2,12 @@
 {% load staticfiles %}
 {%block content%}
 
-<div class="div1">
-    <div class="divlogo" style="color: black">Request leave</div>
-<table class="table">
+<div class="req_div2">
+    <div class="divlogo" style="color: black">Requested leave</div>
     {% for instance in leaveqs %}
+        <div class="req_div1">
+        <table class="table">
+
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ instance.start_date}}</td>
@@ -25,10 +27,12 @@
                 </form>
             </td>
         </tr>
+            </table>
+
+        </div>
     {% endfor %}
-</table>
 
 </div>
   </div>
-
+</div>
 {%endblock%}
