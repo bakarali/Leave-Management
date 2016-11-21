@@ -14,9 +14,6 @@ def EmployeeView(request):
         return render(request, 'login.html')
     else:
         qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
-        context = {
-            "qs": qs
-        }
         qs1 = Employee.objects.all()
         context = {
             "qs": qs,
@@ -31,34 +28,37 @@ def timeoffapply(request):
     else:
         stdate = request.POST['startDate']
         enddate = request.POST['endDate']
+        leavetype = request.POST['leaveType']
+        days = list(zip(Leave_type.objects.filter(type=leavetype).values_list('max_days', flat=True))[0])
+        lt = list(zip(Leave_type.objects.filter(type=leavetype).values_list('type', flat=True))[0])
         d1 = datetime.strptime(stdate, "%Y-%m-%d")
         d2 = datetime.strptime(enddate, "%Y-%m-%d")
         d3 = abs((d2 - d1).days)
-        leavetype = request.POST['leaveType']
-        getleaveid = list(zip(Leave_type.objects.filter(type=leavetype).values_list('id', flat=True))[0])
-        split_lt_id = ("".join(str(e) for e in getleaveid))
-        empid = (request.session['id'])[0]
-        leave_id = Leave.objects.all().count()
-        test = Leave(id=(leave_id + 1), start_date=stdate, end_date=enddate,
-                     days=d3,
-                     status="pending")
-        test.Emp_id_id = empid
-        test.leave_type_id_id = split_lt_id
-        test.save()
-        # from_mail = list(zip(Employee.objects.filter(id=(request.session['id'])[0]).values_list('email', flat=True))[0])
-        # to = list(zip(Employee_Relation.objects.filter(Employee_id=empid).values_list('Manager_id', flat=True))[0])
-        # to_mail = list(zip(Employee.objects.filter(id = to[0]).values_list('email',flat = True))[0])
-        # to = settings.EMAIL_HOST_USER
-        # to_email = [to, to_mail]
-        # send_mail(
-        #     'Apply for leave',
-        #     'Here is the message.',
-        #     'bakaralisunasra@gmail.com',
-        #     ['sunasra@gmail.com'],
-        #     fail_silently=False,
-        # )
+        if days[0] >= d3 or lt == leavetype[0]:
+            getleaveid = list(zip(Leave_type.objects.filter(type=leavetype).values_list('id', flat=True))[0])
+            split_lt_id = ("".join(str(e) for e in getleaveid))
+            empid = (request.session['id'])[0]
+            leave_id = Leave.objects.all().count()
+            test = Leave(id=(leave_id + 1), start_date=stdate, end_date=enddate,
+                         days=d3,
+                         status="pending")
+            test.Emp_id_id = empid
+            test.leave_type_id_id = split_lt_id
+            test.save()
+            # from_mail = list(zip(Employee.objects.filter(id=(request.session['id'])[0]).values_list('email', flat=True))[0])
+            # to = list(zip(Employee_Relation.objects.filter(Employee_id=empid).values_list('Manager_id', flat=True))[0])
+            # to_mail = list(zip(Employee.objects.filter(id = to[0]).values_list('email',flat = True))[0])
+            # to = settings.EMAIL_HOST_USER
+            # to_email = [to, to_mail]
+            # send_mail(
+            #     'Apply for leave',
+            #     'Here is the message.',
+            #     'bakaralisunasra@gmail.com',
+            #     ['sunasra@gmail.com'],
+            #     fail_silently=False,
+            # )
 
-        return HttpResponseRedirect('/')
+        return HttpResponse(leavetype)
 
 
 # def leaveRequestdisplay():
@@ -70,23 +70,13 @@ def timeoffrequested(request):
     if not request.session.get('id', None):
         return render(request, 'login.html')
     else:
-        get_emp_id = []
         empid = (request.session['id'])[0]
-        c = Employee_Relation.objects.filter(Manager_id=empid).count()
-        for i in range(c):
-            get_emp_id = [i]
-            # get_emp_id[i] = list(
-            #     zip(Employee_Relation.objects.filter(Manager_id=empid).values_list('Employee_id', flat=True)))[0]
-        return HttpResponse(get_emp_id)
-        #return HttpResponse(c)
-        # for i in count:
-
-        # for i in count:
-        #     leaveqs = Leave.objects.all().exclude(status="canceled").filter(Emp_id=get_emp_id[i])
-        #     context = {
-        #          "leaveqs": leaveqs
-        #      }
-        #     return render(request, 'timeoffrequests.html', context)
+        get_emp_id = Employee_Relation.objects.filter(Manager_id= empid).values_list('Employee_id', flat=True)
+        get_leave = Leave.objects.filter(Emp_id__in = get_emp_id).exclude(status="canceled")
+        context = {
+                  "leaveqs": get_leave
+        }
+        return render(request, 'timeoffrequests.html', context)
 
 
 def approve(request):
@@ -107,7 +97,7 @@ def decline(request):
     else:
         lid = request.POST['leaveid']
         test = Leave.objects.get(id=lid)
-        test.status = "declined"
+        test.status = "Declined"
         test.save()
         return HttpResponseRedirect('/timeoffrequests')
         #return render(request, 'timeoffrequests.html', leaveRequestdisplay())
