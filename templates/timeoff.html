@@ -7,9 +7,9 @@
 <div class="apply_div">
     <table class="table1">
         <tr>
-            <td><label><input class="input_date" type="date" name="startDate" /></label></td>
+            <td><label><input class="input_date" type="date" name="startDate" required/></label></td>
             <td><label>to</label></td>
-            <td><input class="input_date"  type="date" name="endDate" /></td>
+            <td><input class="input_date"  type="date" name="endDate" required /></td>
             <td><select class="select_lt" name="leaveType">
                 <option>Annual leave</option>
                 <option>Casual leave</option>
@@ -21,7 +21,14 @@
         </tr>
     </table>
 </div>
-
+<div>
+    {% if error == "true" %}
+        <div class="alert error">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span>{{ msg }}</span>
+</div>
+    {% endif %}
+</div>
 </form>
 
     {% for instance in qs %}
@@ -32,6 +39,7 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ instance.start_date}}</td>
             <td>{{ instance.end_date }}</td>
+            <td>{{ instance.type}}</td>
             <td>{{ instance.days}}</td>
             <td>{{ instance.status }}</td>
             <td><form action="canceled" method="post">
@@ -52,5 +60,10 @@
         {{ instance.password}}<br>
     {% endfor %}
 
+
 </div>
+
+     <!---<div id="cngpwd" style="display:none;">
+        <p>Content goes here.</p>
+    </div>---->
 {%endblock%}

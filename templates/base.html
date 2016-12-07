@@ -2,6 +2,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
+        <script type="text/javascript">
+            function showhide(id) {
+            var e = document.getElementById(id);
+            e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+        }
+</script>
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
         <link rel = "stylesheet" type="text/css" href = "{% static 'style.css'%}">
     <meta charset="UTF-8">
@@ -17,7 +23,7 @@
       <ul>
           <li><p>{{ qs.name }}</p></li>
           <li><a href="/logout">LOGOUT</a></li>
-          <li><a>NOTIFICATION</a></li>
+          <li><a href="/changepassword">CHANGE PASSWORD</a></li>
           <li><a href="/timeoffrequests">VIEW LEAVE</a></li>
 
        </ul>

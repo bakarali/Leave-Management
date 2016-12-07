@@ -5,6 +5,7 @@
     <title>LEAVE MANAGEMENT</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 	<link rel = "stylesheet" type="text/css" href = "{% static 'style.css'%}"> </link>
+
 </head>
 <body class="log_body">
 <div class="log_div2">
@@ -14,9 +15,14 @@
         <div class="log_div3">
         <form action="logged" method="post">
             {% csrf_token %}
-            <input class="logintextbox" type="email" name="Email" placeholder="Email">
-            <input class="logintextbox" type="password" name="password" placeholder="Password">
+            <input class="logintextbox" type="email" name="Email" placeholder="Email" >
+            <input class="logintextbox" type="password" name="password" placeholder="Password" required>
             <input class="button button2 loginbtn" type="submit" value="Login">
+             {% if error == "true" %}
+             <div>
+                    <p style="color: red">{{ msg }}</p>
+             </div>
+    {% endif %}
         </form>
         </div>
 

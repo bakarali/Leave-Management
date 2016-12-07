@@ -28,8 +28,8 @@ class Leave_type(models.Model):
 class Leave(models.Model):
     Emp_id = models.ForeignKey('Employee', related_name='Emp_id')
     leave_type_id = models.ForeignKey('Leave_type', related_name='leave_type_id')
-    # Emp_id = models.IntegerField()
-    # leave_type_id = models.IntegerField()
+    name = models.CharField(max_length=200)
+    type = models.CharField(max_length=200)
     start_date = models.DateField()
     end_date = models.DateField()
     days = models.IntegerField()

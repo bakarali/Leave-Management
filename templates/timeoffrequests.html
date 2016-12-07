@@ -10,8 +10,10 @@
 
         <tr>
             <td>{{ forloop.counter }}</td>
+            <td>{{ instance.name }}</td>
             <td>{{ instance.start_date}}</td>
             <td>{{ instance.end_date }}</td>
+            <td>{{ instance.type}}</td>
             <td>{{ instance.status }}</td>
             <td>
               <form action="approve" method="post">

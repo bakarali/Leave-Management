@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from datetime import datetime
+from django.db.models import Sum
 
 from leavemanagement.models import Leave, Leave_type, Employee, Employee_Relation
 
@@ -23,6 +24,7 @@ def EmployeeView(request):
 
 
 def timeoffapply(request):
+
     if not request.session.get('id', None):
         return render(request, 'login.html')
     else:
@@ -33,37 +35,48 @@ def timeoffapply(request):
         lt = list(zip(Leave_type.objects.filter(type=leavetype).values_list('type', flat=True))[0])
         d1 = datetime.strptime(stdate, "%Y-%m-%d")
         d2 = datetime.strptime(enddate, "%Y-%m-%d")
-        d3 = abs((d2 - d1).days)
-        if days[0] >= d3 or lt == leavetype[0]:
-            getleaveid = list(zip(Leave_type.objects.filter(type=leavetype).values_list('id', flat=True))[0])
-            split_lt_id = ("".join(str(e) for e in getleaveid))
-            empid = (request.session['id'])[0]
-            leave_id = Leave.objects.all().count()
-            test = Leave(id=(leave_id + 1), start_date=stdate, end_date=enddate,
-                         days=d3,
-                         status="pending")
-            test.Emp_id_id = empid
-            test.leave_type_id_id = split_lt_id
-            test.save()
-            # from_mail = list(zip(Employee.objects.filter(id=(request.session['id'])[0]).values_list('email', flat=True))[0])
-            # to = list(zip(Employee_Relation.objects.filter(Employee_id=empid).values_list('Manager_id', flat=True))[0])
-            # to_mail = list(zip(Employee.objects.filter(id = to[0]).values_list('email',flat = True))[0])
-            # to = settings.EMAIL_HOST_USER
-            # to_email = [to, to_mail]
-            # send_mail(
-            #     'Apply for leave',
-            #     'Here is the message.',
-            #     'bakaralisunasra@gmail.com',
-            #     ['sunasra@gmail.com'],
-            #     fail_silently=False,
-            # )
+        d3 = abs((d2 - d1).days)+1
+        empid = (request.session['id'])[0]
+        countdays = Leave.objects.filter(Emp_id = empid,type=leavetype).aggregate(Sum('days'))
+        if countdays['days__sum'] == None:
+            finaday = (days[0] - 0)
+        else:
+            finaday=(days[0] - countdays['days__sum'])
+        if enddate>=stdate:
+            if finaday >= d3:
+                getleaveid = list(zip(Leave_type.objects.filter(type=leavetype).values_list('id', flat=True))[0])
+                split_lt_id = ("".join(str(e) for e in getleaveid))
+                empid = (request.session['id'])[0]
+                get_emp_name = list(zip(Employee.objects.filter(id=empid).values_list('name', flat=True))[0])
+                get_emp_name = ("".join(str(e) for e in get_emp_name))
+                empid = (request.session['id'])[0]
+                leave_id = Leave.objects.all().count()
+                test = Leave(id=(leave_id + 1), name=get_emp_name, type=leavetype, start_date=stdate, end_date=enddate,
+                             days=d3,
+                             status="pending")
 
-        return HttpResponse(leavetype)
+                test.Emp_id_id = empid
+                test.leave_type_id_id = split_lt_id
+                test.save()
+                return HttpResponseRedirect('/')
+            else:
+                qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
+                context = {
+                    "qs": qs,
+                    "error": "true",
+                    "msg": "You are allowed to have holidays for " + str(finaday) + " days in " +str(leavetype)
+                }
+                return render(request, 'timeoff.html', context)
 
 
-# def leaveRequestdisplay():
-#
-#     return context
+        else:
+            qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
+            context = {
+                "qs":qs,
+                "error": "true",
+                "msg": "Start date should not be greater then End date"
+            }
+            return render(request, 'timeoff.html', context)
 
 
 def timeoffrequested(request):
@@ -71,10 +84,10 @@ def timeoffrequested(request):
         return render(request, 'login.html')
     else:
         empid = (request.session['id'])[0]
-        get_emp_id = Employee_Relation.objects.filter(Manager_id= empid).values_list('Employee_id', flat=True)
-        get_leave = Leave.objects.filter(Emp_id__in = get_emp_id).exclude(status="canceled")
+        get_emp_id = Employee_Relation.objects.filter(Manager_id=empid).values_list('Employee_id', flat=True)
+        get_leave = Leave.objects.filter(Emp_id__in=get_emp_id).exclude(status="canceled")
         context = {
-                  "leaveqs": get_leave
+            "leaveqs": get_leave
         }
         return render(request, 'timeoffrequests.html', context)
 
@@ -88,7 +101,7 @@ def approve(request):
         test.status = "Approved"
         test.save()
         return HttpResponseRedirect('/timeoffrequests')
-        #return render(request, 'timeoffrequests.html', leaveRequestdisplay())
+        # return render(request, 'timeoffrequests.html', leaveRequestdisplay())
 
 
 def decline(request):
@@ -100,7 +113,7 @@ def decline(request):
         test.status = "Declined"
         test.save()
         return HttpResponseRedirect('/timeoffrequests')
-        #return render(request, 'timeoffrequests.html', leaveRequestdisplay())
+        # return render(request, 'timeoffrequests.html', leaveRequestdisplay())
 
 
 def cancelleave(request):
@@ -132,10 +145,61 @@ def logged(request):
 
             # return HttpResponse(data)
             return HttpResponseRedirect('/')
-    return render(request, 'login.html')
+    else:
+        context = {
+            "error": "true",
+            "msg": "Login failed : Wrong credentials. Try again."
+
+        }
+        return render(request, 'login.html',context)
+
 
 
 def logout(request):
     del request.session['id']
     request.session.modified = True
     return HttpResponseRedirect('/login')
+
+
+def changepassword(request):
+
+   return render(request, 'changepassword.html')
+
+
+def passwordchange(request):
+    oldpwd = request.POST['oldpwd']
+    newpwd = request.POST['newpwd']
+    cnfpwd = request.POST['cnfpwd']
+    if oldpwd != newpwd:
+        if Employee.objects.filter(password=oldpwd, id=(request.session['id'])[0]):
+            if newpwd == cnfpwd:
+                test = Employee.objects.get(id=(request.session['id'])[0])
+                test.password = newpwd
+                test.save()
+                context = {
+                    "status": "success",
+                    "msg": "Password successfully changed!!"
+
+                }
+                return render(request, 'changepassword.html',context)
+            else:
+                context = {
+                    "status": "error",
+                    "msg": "Password does not match. Try again"
+
+                }
+                return render(request, 'changepassword.html',context)
+        else:
+            context = {
+                "status": "error",
+                "msg": "Old password is wrong. Try again"
+
+            }
+            return render(request, 'changepassword.html', context)
+    else:
+        context = {
+            "status": "error",
+            "msg": "Old password and New password should be different . Try again"
+
+        }
+        return render(request, 'changepassword.html', context)
