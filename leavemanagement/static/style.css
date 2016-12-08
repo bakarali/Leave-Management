@@ -25,7 +25,7 @@ body{
 .apply_btn{ padding: 10px 35px;}
 .apply_div{
     padding: 30px;
-    width: 70%;
+    width: 80%;
     margin: auto;
     margin-top: 25px;
     border:  1px solid #e7e7e7 ;
@@ -36,7 +36,7 @@ body{
 
 }
 .req_div2{
-    width: 70%;
+    width: 80%;
     margin: auto;
 }
 .req_div1{
@@ -55,7 +55,7 @@ body{
     padding: 20px;
     padding-left: 30px;
     padding-right: 30px;
-    width: 70%;
+    width: 80%;
     margin: auto;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -158,8 +158,13 @@ li a {
      border: none;
     border-bottom: 1px solid #E0E0E0;
 }
+input[type=date]:focus,
+.logintextbox:focus{
+        outline: none;
+        border-bottom: 1px solid #037bd4;
+}
 .log_div2{
-    width: 25%;
+    width: 30%;
     height: 50%;
     margin: auto;
     position: absolute;
@@ -205,8 +210,9 @@ input[type=date] {
     padding: 7px 15px;
     margin: 8px 0;
     box-sizing: border-box;
-    border-radius: 1px;
-    border: 1px solid #9E9E9E;
+     border: none;
+    border : 1px solid #9E9E9E;
+
 }
 .scrollable {
     overflow-y: scroll;
@@ -216,7 +222,7 @@ input[type=date] {
 .error {background-color: #f44336;opacity: 0.83;}
 
 .alert {
-   animation: cssAnimation 0s ease-in 5s forwards;
+   animation: cssAnimation 0s ease-in 3s forwards;
     animation-fill-mode: forwards;
     margin:auto;
     margin-top: 25px;
@@ -302,9 +308,10 @@ input[type=date] {
     border-bottom: 1px solid gray;
 
 }
-.cngpwd:focus {
-	 border: none;
-    border-bottom: 1px solid gray;
+.cngpwd:focus
+{
+        outline: none;
+        border-bottom: 1px solid #037bd4;
 }
 .chngdiv{
     padding: 20px;

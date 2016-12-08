@@ -15,13 +15,10 @@ def EmployeeView(request):
         return render(request, 'login.html')
     else:
         qs = Leave.objects.all().filter(Emp_id=(request.session['id'])[0])
-        qs1 = Employee.objects.all()
         context = {
             "qs": qs,
-            "qs1": qs1
         }
         return render(request, "timeoff.html", context)
-
 
 def timeoffapply(request):
 
