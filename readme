@@ -1,0 +1,8 @@
+Leave Management is a platform, where corporate people can manage their leaves easily.
+
+Description :
+Employee has to login with emailId and password, they can apply leave of several type and manager can approve or disapprove leave.
+Employee can check status of applied leave.
+To apply leaves, employee has to select days by date range and leave type. After request, employee can see all leave status on dashboard. employee can not select more than available leaves.
+
+Developed using Python, HTML, CSS, SQLite, Django Framework.
